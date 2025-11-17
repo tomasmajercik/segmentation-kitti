@@ -1,5 +1,6 @@
 data/
+data/kitti
+data/cityscapes
 .conda/
-
-
 .vscode/
+.DS_Store
