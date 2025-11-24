@@ -4,7 +4,7 @@ from PIL import Image
 import torchvision.transforms as transforms
 import torchvision.transforms.functional as F
 
-def augument_subset(dataset_root, percent=0.3, splits=["train", "val"], seed=42):
+def augument_subset(dataset_root, percent=0.3, splits=["train"], seed=42):
     random.seed(seed)
 
     color_jitter = transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2)
@@ -59,7 +59,7 @@ def augument_subset(dataset_root, percent=0.3, splits=["train", "val"], seed=42)
 
 from pathlib import Path
 
-def delete_augmented(dataset_root, splits=["train", "val"]):
+def delete_augmented(dataset_root, splits=["train"]):
     for split in splits:
         split_input = Path(dataset_root) / split / "input"
         split_masks = Path(dataset_root) / split / "masks"
