@@ -15,18 +15,18 @@ def augument_subset(dataset_root, percent=0.3, splits=["train"], seed=42):
 
     # Color jitter for RGB image only
     color_jitter = transforms.ColorJitter(
-        brightness=0.2,
-        contrast=0.2,
-        saturation=0.2
+        brightness=random.randint(0, 4) * 0.2,
+        contrast=random.randint(0, 4) * 0.2,
+        saturation=random.randint(0, 4) * 0.2
     )
 
-    # Kornia rain augmentation (tensor-based)
-    rain_aug = K.RandomRain(
-        drop_height=(10, 20),  # height of rain drops
-        drop_width=(1, 2),      # width of rain drops
-        number_of_drops=(500, 1000),  # number of drops
-        p=0.5
-    )
+    # Optional: Kornia augmentations (disabled by default)
+    # rain_aug = K.RandomRain(
+    #     drop_height=(10, 20),
+    #     drop_width=(1, 2),
+    #     number_of_drops=(500, 1000),
+    #     p=0.5
+    # )
 
     def apply_transforms(img, mask):
         # Horizontal flip
@@ -82,14 +82,10 @@ def augument_subset(dataset_root, percent=0.3, splits=["train"], seed=42):
             # Apply color jitter (PIL)
             img_aug = color_jitter(img_aug)
 
-            # Convert to tensor for Kornia
-            img_tensor = transforms.ToTensor()(img_aug).unsqueeze(0)  # shape: (1,3,H,W)
-
-            # Apply rain (image only)
-            img_tensor = rain_aug(img_tensor)
-
-            # Convert back to PIL
-            img_aug = transforms.ToPILImage()(img_tensor.squeeze(0))
+            # Optional: Apply rain if enabled
+            # img_tensor = transforms.ToTensor()(img_aug).unsqueeze(0)
+            # img_tensor = rain_aug(img_tensor)
+            # img_aug = transforms.ToPILImage()(img_tensor.squeeze(0))
 
             # Save
             aug_name = f"{img_path.stem}_aug_{i:05d}.png"
