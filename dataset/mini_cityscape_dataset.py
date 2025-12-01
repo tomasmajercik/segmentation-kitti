@@ -21,16 +21,22 @@ class MiniCityscapeDataset(Dataset):
         return len(self.images)
     
     def __getitem__(self, idx, target_size=(512, 256)):
-        img_path = os.path.join(self.root, self.split, 'input', self.images[idx])
-        mask_path = os.path.join(self.root, self.split, 'masks', self.masks[idx])
+      img_path = os.path.join(self.root, self.split, 'input', self.images[idx])
+      mask_path = os.path.join(self.root, self.split, 'masks', self.masks[idx])
 
-        image = np.array(Image.open(img_path).convert("RGB").resize(target_size))
-        mask  = np.array(Image.open(mask_path).resize(target_size, resample=Image.NEAREST))
+      image = np.array(Image.open(img_path).convert("RGB").resize(target_size))
+      
+      # Load mask as single channel (L)
+      mask  = np.array(
+          Image.open(mask_path)
+          .convert("L")                               # FORCE SINGLE CHANNEL
+          .resize(target_size, resample=Image.NEAREST)
+      )
 
-        # convert to tensors
-        image = torch.tensor(image).permute(2, 0, 1).float() / 255.0  # Normalize to [0, 1]
-        mask = torch.tensor(mask).long()
+      image = torch.tensor(image).permute(2, 0, 1).float() / 255.0
+      mask = torch.tensor(mask).long()
 
-        # Ignore all labels >= 32
-        mask[mask >= 32] = 255
-        return image, mask
+      # Ignore all labels >= 32
+      mask[mask >= 32] = 255
+
+      return image, mask
