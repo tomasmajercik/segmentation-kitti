@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 model = UNet(n_classes=32).to(DEVICE)
-model.load_state_dict(torch.load("unet_weights3.pth", map_location=torch.device(DEVICE)))
+model.load_state_dict(torch.load("models/weights/unet_weights4.pth", map_location=torch.device(DEVICE)))
 model.eval()
 
 def infer(img_path):
@@ -36,5 +36,5 @@ def plot_segmentation(img, pred):
     plt.show()
 
 if __name__ == "__main__":
-    img, pred = infer("data/mini-cityscape/val/input/00000.png")
+    img, pred = infer("data/mini-cityscape/val/input/00001.png")
     plot_segmentation(img, pred)
