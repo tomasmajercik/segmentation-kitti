@@ -1,9 +1,9 @@
 import torch
+import wandb
 import numpy as np
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
-import wandb
 # from models.unet import UNet
 from models.unet_mini import UNet
 from dataset.mini_cityscape_dataset import MiniCityscapeDataset

@@ -1,6 +1,7 @@
 data/mini-cityscape
 data/kitti
 data/cityscapes
+data/mini-cityscape-small
 wandb/
 .conda/
 .vscode/

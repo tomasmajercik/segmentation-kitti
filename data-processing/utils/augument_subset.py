@@ -7,7 +7,7 @@ import torch
 import torchvision.transforms as transforms
 import torchvision.transforms.functional as F
 
-import kornia.augmentation as K
+# import kornia.augmentation as K
 
 
 def augument_subset(dataset_root, percent=0.3, splits=["train"], seed=42):

@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import torch.nn.functional as F
+from models.dice_loss import DiceLoss
 from torch.utils.data import DataLoader
 
 import wandb
@@ -84,6 +85,7 @@ def train(
     model = UNet(n_classes=n_classes).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=eta_min)
+    dice_loss_fn = DiceLoss(n_classes=n_classes) 
 
     wandb.watch(model, log="all", log_freq=100)
 
@@ -100,7 +102,9 @@ def train(
             imgs, masks = imgs.to(device), masks.to(device)
 
             predictions = model(imgs)
-            loss = F.cross_entropy(predictions, masks, ignore_index=255, label_smoothing=label_smoothing)
+            ce_loss = F.cross_entropy(predictions, masks, ignore_index=255, label_smoothing=label_smoothing)
+            dice_loss = dice_loss_fn(predictions, masks) 
+            loss = ce_loss + dice_loss
 
             optimizer.zero_grad()
             loss.backward()
@@ -147,7 +151,9 @@ def train(
             for imgs, masks in val_loader:
                 imgs, masks = imgs.to(device), masks.to(device)
                 predictions = model(imgs)
-                loss = F.cross_entropy(predictions, masks, ignore_index=255, label_smoothing=label_smoothing)
+                ce_loss = F.cross_entropy(predictions, masks, ignore_index=255, label_smoothing=label_smoothing)
+                dice_loss = dice_loss_fn(predictions, masks)
+                loss = ce_loss + dice_loss
 
                 val_loss_total += loss.item()
                 val_pixel_acc_total += pixel_accuracy(predictions, masks)
