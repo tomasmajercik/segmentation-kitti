@@ -7,8 +7,13 @@ import torch
 import torchvision.transforms as transforms
 import torchvision.transforms.functional as F
 
-# import kornia.augmentation as K
+# import kornia.augmentation as K # alternative augmentations (optional) for rain, fog, etc(not really good quality).
 
+"""
+This script augments a subset of images in a dataset by applying random transformations such as rotation, scaling, flipping, and color jittering.
+It saves the augmented images. It can also delete previously augmented images.
+It is designed to broaden the diversity of training data for machine learning tasks and thus improve model robustness.
+"""
 
 def augument_subset(dataset_root, percent=0.3, splits=["train"], seed=42):
     random.seed(seed)
@@ -96,6 +101,7 @@ def augument_subset(dataset_root, percent=0.3, splits=["train"], seed=42):
 
 
 def delete_augmented(dataset_root, splits=["train"]):
+    # Delete previously augmented images
     for split in splits:
         split_input = Path(dataset_root) / split / "input"
         split_masks = Path(dataset_root) / split / "masks"

@@ -1,8 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-class DoubleConv(nn.Module):
+"""
+reduced UNet model for semantic segmentation
+"""
+class DoubleConv(nn.Module):# two consecutive convolutional layers with batch normalization and ReLU activation
     def __init__(self, in_channels, out_channels):
         super().__init__()
         self.net = nn.Sequential(
@@ -19,26 +21,26 @@ class DoubleConv(nn.Module):
         return self.net(x)
 
 
-class UNet(nn.Module):
+class UNet(nn.Module):# reduced UNet model for semantic segmentation
     def __init__(self, n_classes: int):
         super().__init__()
 
-        # ---- Encoder ----
+        # Encoder
         self.down1 = DoubleConv(3, 32)
         self.down2 = DoubleConv(32, 64)
         self.down3 = DoubleConv(64, 128)
         self.down4 = DoubleConv(128, 256)
 
-        # ---- Bottleneck ----
+        # Bottleneck
         self.bottom = DoubleConv(256, 512)
 
-        # ---- Decoder ----
+        # Decoder
         self.up4 = DoubleConv(512 + 256, 256)
         self.up3 = DoubleConv(256 + 128, 128)
         self.up2 = DoubleConv(128 + 64, 64)
         self.up1 = DoubleConv(64 + 32, 32)
 
-        # ---- Final layer ----
+        # Final layer
         # outputs shape: [N, n_classes, H, W]
         self.final = nn.Conv2d(32, n_classes, kernel_size=1)
 

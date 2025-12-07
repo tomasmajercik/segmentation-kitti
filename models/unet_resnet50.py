@@ -3,6 +3,10 @@ import torch.nn.functional as F
 from torchvision.models import resnet50
 from models.unet_resnet34 import UpBlock
 
+"""
+ResNet50-based UNet model for semantic segmentation.
+"""
+
 class UNetResNet50(nn.Module):
     def __init__(self, n_classes):
         super().__init__()

@@ -1,11 +1,13 @@
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F
-
+"""
+basic UNet model for semantic segmentation
+"""
 class DoubleConv(nn.Module):
     def __init__(self, in_channels, out_channels):
         super().__init__()
-        self.net = nn.Sequential(
+        self.net = nn.Sequential(# two consecutive convolutional layers with batch normalization and ReLU activation
             nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),

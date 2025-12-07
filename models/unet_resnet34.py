@@ -2,7 +2,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import models
-
+"""
+ResNet34-based UNet model for semantic segmentation.
+"""
+# UpBlock: Upsampling block with skip connections for reconstruction in the decoder path
 class UpBlock(nn.Module):
     def __init__(self, in_channels, skip_channels, out_channels):
         super().__init__()

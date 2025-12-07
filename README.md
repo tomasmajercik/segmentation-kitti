@@ -1,2 +1,4 @@
 # segmentation-kitti
-Project repo for picture segementation on KITTI dataset
+Project repo for picture segementation on cityspaces dataset.
+The repository contains:
+

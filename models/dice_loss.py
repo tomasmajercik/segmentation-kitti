@@ -1,5 +1,8 @@
 import torch
-
+"""
+class DiceLoss for multi-class semantic segmentation.
+Calculates the Dice Loss between predicted logits and ground truth masks.
+"""
 class DiceLoss(torch.nn.Module):
     def __init__(self, n_classes, ignore_index=255, eps=1e-6):
         super().__init__()

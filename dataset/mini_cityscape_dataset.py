@@ -4,15 +4,19 @@ import numpy as np
 from PIL import Image
 from torch.utils.data import Dataset
 
+
+# define a class to handle the mini Cityscape dataset
 class MiniCityscapeDataset(Dataset):
     def __init__(self, root, split='train', transform=None, max_samples=None):
         self.root = root
         self.split = split
         self.transform = transform
 
+        # load all image and mask file names
         self.images = sorted(os.listdir(os.path.join(root, split, 'input')))
         self.masks = sorted(os.listdir(os.path.join(root, split, 'masks')))
 
+        # limit to max_samples if specified
         if max_samples is not None:
             self.images = self.images[:max_samples]
             self.masks = self.masks[:max_samples]

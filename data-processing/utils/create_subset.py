@@ -3,9 +3,11 @@ import random
 import shutil
 from pathlib import Path
 
+# Create a smaller subset of the Cityscapes dataset for quicker experiments
 def make_subset(cityscapes_root, output_root, train_size=500, val_size=100, seed=42):
     random.seed(seed)
 
+    
     left_dir = Path(cityscapes_root) / "leftImg8bit_trainvaltest" / "leftImg8bit"
     gt_dir = Path(cityscapes_root) / "gtFine_trainvaltest" / "gtFine"
 
@@ -13,6 +15,7 @@ def make_subset(cityscapes_root, output_root, train_size=500, val_size=100, seed
     splits = ["train", "val"]
     sizes = {"train": train_size, "val": val_size}
 
+    
     for split in splits:
         split_input = out_root / split / "input"
         split_masks = out_root / split / "masks"
@@ -46,6 +49,6 @@ if __name__ == "__main__":
     make_subset(
         cityscapes_root="data/cityscapes",
         output_root="data/mini-cityscape",
-        train_size=500,
-        val_size=100
+        train_size=1000,
+        val_size=200
     )

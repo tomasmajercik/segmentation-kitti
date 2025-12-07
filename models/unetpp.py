@@ -1,7 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+"""
+advanced UNet++ model for semantic segmentation
+"""
 class ConvBlock(nn.Module):
     def __init__(self, in_c, out_c):
         super().__init__()
@@ -22,7 +24,7 @@ class UNetPP(nn.Module):
     def __init__(self, n_classes):
         super().__init__()
 
-        filters = [64, 128, 256, 512, 1024]
+        filters = [64, 128, 256, 512, 1024] # Number of filters at each level
 
         self.conv00 = ConvBlock(3, filters[0])
         self.conv10 = ConvBlock(filters[0], filters[1])
